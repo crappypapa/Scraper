@@ -28,6 +28,19 @@ class Scraper
     end
   end
 
+  def result
+    jobs = @jobs
+    filepath = 'StackOverflow.csv'
+    csv_options = { headers: :first_row, col_sep: ',' }
+  
+    CSV.open(filepath, 'wb', csv_options) do |csv|
+      csv << ['Title', 'Company', 'Time Posted']
+      jobs.each do |a|
+        csv << [a[:job_title], a[:job_company], a[:job_time_posted]]
+      end
+    end
+  end
+
   private
 
   def parse_site(url)
