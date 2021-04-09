@@ -1,8 +1,7 @@
 require_relative '../lib/scraper'
-#require_relative '../bin/main'
 
 describe Scraper do
-  let (:site) {Scraper.new}
+  let(:site) { Scraper.new }
   describe 'initialize' do
     it 'sets url to a string value' do
       expect(site.url).to be_a(String)
@@ -13,13 +12,11 @@ describe Scraper do
     end
   end
 
-  
-
   describe '#result' do
-    filepath = "StackOverflow.csv"
-    csv_options = {headers: :first_row, col_sep: ','}
+    filepath = 'StackOverflow.csv'
+    csv_options = { headers: :first_row, col_sep: ',' }
     let(:csv) { CSV.open(filepath, 'wb', csv_options) }
-    let(:update_csv) { csv <<[a[:job_title], a[:job_company], a[:job_time_posted]] }
+    let(:update_csv) { csv << [a[:job_title], a[:job_company], a[:job_time_posted]] }
 
     it 'creates and updates csv sheet' do
       site.result
