@@ -32,7 +32,6 @@ class Scraper
     jobs = @jobs
     filepath = 'StackOverflow.csv'
     csv_options = { headers: :first_row, col_sep: ',' }
-  
     CSV.open(filepath, 'wb', csv_options) do |csv|
       csv << ['Title', 'Company', 'Time Posted']
       jobs.each do |a|
@@ -44,7 +43,7 @@ class Scraper
   private
 
   def parse_site(url)
-    unparsed_site = URI.open(url)
+    unparsed_site = URI.parse(url).open
     Nokogiri::HTML(unparsed_site)
   end
 end
