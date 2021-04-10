@@ -13,7 +13,6 @@ puts
 puts 'scraping...'
 puts 'scraping...'
 puts 'scraping...'
-
 site = Scraper.new
 site.scrape
 site.result
