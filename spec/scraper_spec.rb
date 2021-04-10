@@ -1,4 +1,19 @@
 require_relative '../lib/scraper'
+require_relative '../lib/user'
+
+describe User do
+  describe '#validate' do
+    it 'it returns false if user inputs a blank name' do
+      user = User.new
+      expect(user.validate('')).to eql(false)
+    end
+
+    it 'checks and returns true if name given is not blank' do
+      user = User.new
+      expect(user.validate('ola')).to eql(true)
+    end
+  end
+end
 
 describe Scraper do
   let(:site) { Scraper.new }
