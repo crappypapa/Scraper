@@ -19,6 +19,7 @@ class Scraper
       job_listing.each do |job|
         job = {
           job_title: job.css('.stretched-link').text,
+          job_tag: job.css('.no-tag-menu').text,
           job_company: job.css('h3.fc-black-700.fs-body1.mb4 span').text,
           job_time_posted: job.css('span.fc-orange-400.fw-bold').text
         }
@@ -33,9 +34,9 @@ class Scraper
     filepath = 'StackOverflow.csv'
     csv_options = { headers: :first_row, col_sep: ',' }
     CSV.open(filepath, 'wb', csv_options) do |csv|
-      csv << ['Title', 'Company', 'Time Posted']
+      csv << ['Title','Job_Tag' ,'Company', 'Time Posted']
       jobs.each do |a|
-        csv << [a[:job_title], a[:job_company], a[:job_time_posted]]
+        csv << [a[:job_title],a[:job_tag], a[:job_company], a[:job_time_posted]]
       end
     end
   end
