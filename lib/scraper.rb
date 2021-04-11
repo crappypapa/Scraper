@@ -1,8 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'csv'
-#require_relative '../bin/main'
-
+# require_relative '../bin/main'
 
 class Scraper
   attr_reader :jobs, :url, :query, :option
@@ -10,10 +9,10 @@ class Scraper
   def initialize
     @jobs = []
     @option = option
-    @job_sorted = Array.new
+    @job_sorted = []
     @url = 'https://stackoverflow.com/jobs'
     @query = query
-    @options = ['title', 'company','tag']
+    @options = %w[title company tag]
   end
 
   def scrape
@@ -35,48 +34,36 @@ class Scraper
     end
   end
 
-  def sort(option, query)
-    if option == "company" 
-      @job_sorted << @jobs.select {|a| a[:job_company].downcase.match(/#{Regexp.quote("#{query}")}/)}
-    elsif option == "title"
-     @job_sorted << @jobs.select {|a| a[:job_title].downcase.match(/#{Regexp.quote("#{query}")}/)}
-    elsif option == "tag"
-      @job_sorted << @jobs.select {|a| a[:job_tag].downcase.match(/#{Regexp.quote("#{query}")}/)}
+  def group(option, query)
+    case option
+    when 'company'
+      @job_sorted << @jobs.select { |a| a[:job_company].downcase.match(/#{Regexp.quote(query.to_s)}/) }
+    when 'title'
+      @job_sorted << @jobs.select { |a| a[:job_title].downcase.match(/#{Regexp.quote(query.to_s)}/) }
+    when 'tag'
+      @job_sorted << @jobs.select { |a| a[:job_tag].downcase.match(/#{Regexp.quote(query.to_s)}/) }
     end
   end
-  
+
   def option_check(option)
     @options.include? option
   end
-
-  def query_title(query)
-   @jobs.select {|a| a[:job_title].downcase.match(/#{Regexp.quote("#{query}")}/)}
-  end
- 
-  def query_tag(query)
-   @jobs.select {|a| a[:job_tag].downcase.match(/#{Regexp.quote("#{query}")}/)}
-  end
-
-  def query_company(query)
-   @jobs.select {|a| a[:job_company].downcase.match(/#{Regexp.quote("#{query}")}/)}
-  end
-
 
   def result
     job_sorted = @job_sorted.flatten
     filepath = 'StackOverflow.csv'
     csv_options = { headers: :first_row, col_sep: ',' }
-    if job_sorted.length > 0
+    if job_sorted.length.positive?
       CSV.open(filepath, 'wb', csv_options) do |csv|
-        csv << ['Title','Job_Tag' ,'Company', 'Time Posted']
+        csv << ['Title', 'Job_Tag', 'Company', 'Time Posted']
         job_sorted.each do |a|
-          csv << [a[:job_title],a[:job_tag], a[:job_company], a[:job_time_posted]]
+          csv << [a[:job_title], a[:job_tag], a[:job_company], a[:job_time_posted]]
         end
       end
       puts 'Scraping successfully completed'
       puts 'The results are in the "StackOverflow.csv" file'
     else
-      puts "I am unable to find valid matches at this time, Try again later."
+      puts 'I am unable to find valid matches at this time, Try again later.'
     end
   end
 
