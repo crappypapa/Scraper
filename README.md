@@ -1,6 +1,8 @@
 # Web Scraper
 
-This project implements the use of Ruby Language to execute basic web scraping functionalities. The project scrapes through the Stack Overflow websites and gathers the job listing available on the website, orders them into a CSV file using the Job Title, Company and Duration it was posted.
+This project implements the use of Ruby Language to execute basic web scraping functionalities. The project scrapes through the Stack Overflow websites and gathers the job listing available on the website, orders them into a CSV file using the Job Title, Job tag, Company and Duration it was posted.
+
+It allows for user to define a query based on any of Title, tag and company and receive a CSV file generated based on the results of the query.
 
 ## Built With
 
