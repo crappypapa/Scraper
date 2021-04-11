@@ -35,7 +35,15 @@ class Scraper
     end
   end
 
-  
+  def sort(option, query)
+    if option == "company" 
+      @job_sorted << @jobs.select {|a| a[:job_company].downcase.match(/#{Regexp.quote("#{query}")}/)}
+    elsif option == "title"
+     @job_sorted << @jobs.select {|a| a[:job_title].downcase.match(/#{Regexp.quote("#{query}")}/)}
+    elsif option == "tag"
+      @job_sorted << @jobs.select {|a| a[:job_tag].downcase.match(/#{Regexp.quote("#{query}")}/)}
+    end
+  end
   
   def option_check(option)
     @options.include? option
