@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require_relative '../lib/scraper'
 require_relative '../lib/user'
-#require_relative '../lib/sort'
+# require_relative '../lib/sort'
 
 puts 'Hello there'
 puts 'Welcome to Crappy\'s StackOverflow job Scraper'
@@ -27,13 +27,15 @@ puts
 selection = false
 while selection == false
   option = gets.chomp.downcase
-  selection = true if option == "none"
-  if sort.option_check(option) 
-    puts "What #{option} do you want to search for?"
+  if sort.option_check(option)
+    puts "What  #{option} do you want to search for?"
     puts
     query = gets.chomp.downcase
+    selection = sort.option_check(option)
   end
-  selection = sort.option_check(option)
+  selection = true if option == 'none'
+  p option
+  p selection
   p 'Please, select one of the options listed above' if selection == false
 end
 puts
@@ -47,6 +49,6 @@ puts 'scraping...'
 puts 'scraping...'
 
 sort.scrape
-sort.sort(option, query)
+sort.group(option, query)
 sort.result
 puts
